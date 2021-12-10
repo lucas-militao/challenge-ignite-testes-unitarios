@@ -1,4 +1,5 @@
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
+import { AppError } from "@shared/errors/AppError";
 import { AuthenticateUserUseCase } from "../authenticateUser/AuthenticateUserUseCase";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { ICreateUserDTO } from "../createUser/ICreateUserDTO";
@@ -36,5 +37,18 @@ describe("Show User Profile", () => {
     expect(userProfile).toHaveProperty("id");
   });
 
-  //TODO: não retornar perfil para usuário não autenticado
+  it("should be able to return a profile when user is not authenticated", async () => {
+    const user: ICreateUserDTO = {
+      email: "user@test.com.br",
+      name: "User Test",
+      password: "1234",
+    };
+
+    const { id } = await createUserUseCase.execute(user);
+
+
+    expect(async () => {
+      await showUserProfileUseCase.execute(id!);
+    }).rejects.toBeInstanceOf(AppError);
+  });
 });
