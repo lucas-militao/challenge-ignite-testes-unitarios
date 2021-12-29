@@ -12,7 +12,8 @@
       "@config/*": ["config/*"],
       "@shared/*": ["shared/*"],
       "@errors/*": ["errors/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@database/*": ["database/*"]
     },
     "esModuleInterop": true,
     "experimentalDecorators": true,
