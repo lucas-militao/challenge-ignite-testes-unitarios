@@ -35,7 +35,7 @@ describe("Get Statement Operation", () => {
 
     const { id } = await createUserUseCase.execute(user);
 
-    authenticateUserUseCase.execute({
+    await authenticateUserUseCase.execute({
       email: user.email,
       password: user.password,
     });
@@ -66,7 +66,7 @@ describe("Get Statement Operation", () => {
 
     const { id } = await createUserUseCase.execute(user);
 
-    authenticateUserUseCase.execute({
+    await authenticateUserUseCase.execute({
       email: user.email,
       password: user.password,
     });

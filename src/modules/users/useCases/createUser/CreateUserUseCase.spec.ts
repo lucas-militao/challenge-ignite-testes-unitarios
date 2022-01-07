@@ -16,8 +16,8 @@ describe("Create User", () => {
 
   it("should be able to create an user", async () => {
     const user: ICreateUserDTO = {
-      email: "test@email.com",
       name: "User Test",
+      email: "test@email.com",
       password: "1234"
     };
 
@@ -29,17 +29,12 @@ describe("Create User", () => {
   it("should not be able to create an existing user", () => {
     expect(async () => {
       const user: ICreateUserDTO = {
-        email: "test@email.com",
         name: "User Test",
+        email: "test@email.com",
         password: "1234"
       };
 
       await createUserUseCase.execute(user);
-      await createUserUseCase.execute({
-        email: user.email,
-        name: "Another User Test",
-        password: "4321"
-      });
     }).rejects.toBeInstanceOf(AppError);
   });
 });

@@ -2,11 +2,10 @@ import createConnection from "@database/."
 import { Connection } from "typeorm";
 import request from "supertest";
 import { app } from "../../../../app";
-import { AppError } from "@shared/errors/AppError";
 
 let connection: Connection;
 
-describe("Authenticate User", () => {
+describe("Create Statement", () => {
 
   beforeAll(async () => {
     connection = await createConnection();
@@ -18,23 +17,35 @@ describe("Authenticate User", () => {
     await connection.close();
   });
 
-  it("should be able to authenticate user", async () => {
+  it("should be able to do a deposit", async () => {
     await request(app)
       .post("/api/v1/users")
       .send({
         name: "User Test",
-        email: "test@test.com.br",
+        email: "usertest@test.com.br",
         password: "12345"
     });
 
-    const response = await request(app)
+    const responseToken = await request(app)
       .post("/api/v1/sessions")
       .send({
-        email: "test@test.com.br",
+        email: "usertest@test.com.br",
         password: "12345"
     });
 
-    expect(response.body).toHaveProperty("user");
-    expect(response.body).toHaveProperty("token");
+    const { token } = responseToken.body;
+
+    const response = await request(app)
+      .post("/api/v1/statements/deposit")
+      .send({
+        amount: "100",
+        description: "mesada"
+      })
+      .set({
+        Authorization: `Bearer ${token}`,
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("id");
   });
 });

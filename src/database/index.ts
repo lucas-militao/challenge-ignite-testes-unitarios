@@ -5,7 +5,7 @@ export default async (host = "localhost"): Promise<Connection> => {
 
   return createConnection(
     Object.assign(defaultOptions, {
-      database: process.env.NODE_ENV === "test" ? "fin_api_test" : "fin_api"
+      database: process.env.NODE_ENV === "test" ? "fin_api_test" : "fin_api_test"
     })
   )
 }
