@@ -1,6 +1,6 @@
-import { OperationType } from "@modules/statements/entities/Statement";
+import { OperationType, Statement } from "@modules/statements/entities/Statement";
 import { User } from "@modules/users/entities/User";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 
 @Entity("transfers")
@@ -9,20 +9,16 @@ class Transfer {
   id: string;
 
   @Column()
-  sender_id: string;
-
-  @OneToMany(() => User, user => user.statement)
-  @JoinColumn({name: "sender_id"})
-  sender: User;
+  statement_id: string;
 
   @Column()
-  amount: number;
+  sender_id: string;
+
+  @Column()
+  receiver_id: string;
 
   @Column()
   description: string;
-
-  @Column()
-  type: OperationType;
 
   @CreateDateColumn()
   created_at: Date;

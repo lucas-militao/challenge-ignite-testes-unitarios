@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { User } from '../../users/entities/User';
+import { Transfer } from './Transfer';
 
 export enum OperationType {
   DEPOSIT = 'deposit',
@@ -24,9 +26,13 @@ export class Statement {
   @Column('uuid')
   user_id: string;
 
-  @ManyToOne(() => User, user => user.transfer)
+  @ManyToOne(() => User, user => user.statement)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToOne(() => Transfer)
+  @JoinColumn({ referencedColumnName: "statement_id" })
+  transfer: Transfer
 
   @Column()
   description: string;

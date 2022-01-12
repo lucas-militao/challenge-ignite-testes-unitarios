@@ -12,44 +12,53 @@ export class transfersTable1641991218422 implements MigrationInterface {
             isPrimary: true,
           },
           {
+            name: 'statement_id',
+            type: 'uuid',
+          },
+          {
             name: 'sender_id',
             type: 'uuid',
           },
           {
-            name: 'description',
-            type: 'varchar',
-          },
-          {
-            name: 'amount',
-            type: 'decimal',
-            precision: 5,
-            scale: 2,
-          },
-          {
-            name: 'type',
-            type: 'enum',
-            enum: ['deposit', 'withdraw', 'transfer']
+            name: 'receiver_id',
+            type: 'uuid',
           },
           {
             name: 'created_at',
             type: 'timestamp',
-            default: 'now()'
+            default: 'now()',
           },
           {
             name: 'updated_at',
             type: 'timestamp',
-            default: 'now()'
+            default: 'now()',
           }
         ],
         foreignKeys: [
           {
-            name: 'transfers',
+            name: 'transfer_sender',
             columnNames: ['sender_id'],
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
             onUpdate: 'CASCADE',
             onDelete: 'CASCADE'
-          }
+          },
+          {
+            name: 'transfer_receiver',
+            columnNames: ['receiver_id'],
+            referencedTableName: 'users',
+            referencedColumnNames: ['id'],
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+          },
+          {
+            name: 'transfer_statement',
+            columnNames: ['statement_id'],
+            referencedTableName: 'statements',
+            referencedColumnNames: ['id'],
+            onUpdate: 'CASCADE',
+            onDelete: 'CASCADE'
+          },
         ]
       }))
     }
