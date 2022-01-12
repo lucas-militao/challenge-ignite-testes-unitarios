@@ -4,7 +4,7 @@ import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/I
 import { AuthenticateUserUseCase } from "@modules/users/useCases/authenticateUser/AuthenticateUserUseCase";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
 import { ICreateUserDTO } from "@modules/users/useCases/createUser/ICreateUserDTO";
-import { AppError } from "@shared/errors/AppError";
+import { CreateStatementError } from "./CreateStatementError";
 
 import { CreateStatementUseCase } from "./CreateStatementUseCase";
 import { ICreateStatementDTO } from "./ICreateStatementDTO";
@@ -107,21 +107,8 @@ describe("Create Statement", () => {
       user_id: id!
     }
 
-    expect(async () => {
-      await createStatementUseCase.execute(withdraw);
-    }).rejects.toBeInstanceOf(AppError);
-  });
-
-  it("should not be able to make an operation for a not existing user", async () => {
-    const deposit: ICreateStatementDTO = {
-      amount: 300,
-      description: "salário",
-      type: OperationType.DEPOSIT,
-      user_id: "12345"
-    }
-
-    expect(async () => {
-      await createStatementUseCase.execute(deposit);
-    }).rejects.toBeInstanceOf(AppError);
+    expect(
+      createStatementUseCase.execute(withdraw)
+    ).rejects.toEqual(new CreateStatementError.InsufficientFunds());
   });
 })

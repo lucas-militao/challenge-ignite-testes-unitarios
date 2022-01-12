@@ -5,8 +5,6 @@ import { CreateUserError } from "./CreateUserError";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { ICreateUserDTO } from "./ICreateUserDTO";
 
-
-
 @injectable()
 export class CreateUserUseCase {
   constructor(

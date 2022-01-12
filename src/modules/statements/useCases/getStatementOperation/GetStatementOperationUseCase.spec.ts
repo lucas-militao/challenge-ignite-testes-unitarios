@@ -56,35 +56,4 @@ describe("Get Statement Operation", () => {
 
     expect(result).toHaveProperty("id");
   })
-
-  it("should not be able to get a statement from a non existing user", async () => {
-    const user: ICreateUserDTO = {
-      email: "user@test.com.br",
-      name: "User Test",
-      password: "1234"
-    };
-
-    const { id } = await createUserUseCase.execute(user);
-
-    await authenticateUserUseCase.execute({
-      email: user.email,
-      password: user.password,
-    });
-
-    const statement: ICreateStatementDTO = {
-      amount: 1000,
-      description: "salário",
-      type: OperationType.DEPOSIT,
-      user_id: id!
-    }
-
-    const operation = await createStatementUseCase.execute(statement);
-
-    expect(async () => {
-      await getStatementOperation.execute({
-        user_id: "123456",
-        statement_id: operation.id!
-      });
-    }).rejects.toBeInstanceOf(AppError);
-  })
 })

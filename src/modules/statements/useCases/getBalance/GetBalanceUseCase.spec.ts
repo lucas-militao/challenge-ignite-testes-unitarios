@@ -41,25 +41,4 @@ describe("Get Balance", () => {
 
     expect(result).toHaveProperty("balance");
   });
-
-  it("should not be able to get balance from a non existing user", async () => {
-    const user: ICreateUserDTO = {
-      email: "user@test.com.br",
-      name: "User Test",
-      password: "1234"
-    };
-
-    await createUserUseCase.execute(user);
-
-    authenticateUserUseCase.execute({
-      email: user.email,
-      password: user.password,
-    });
-
-    expect(async () => {
-      await getBalanceUseCase.execute({
-        user_id: "wrongid"
-      });
-    }).rejects.toBeInstanceOf(AppError);
-  });
 });

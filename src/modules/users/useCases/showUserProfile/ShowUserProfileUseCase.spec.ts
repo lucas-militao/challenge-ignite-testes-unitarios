@@ -18,7 +18,7 @@ describe("Show User Profile", () => {
     authenticateUserUseCase = new AuthenticateUserUseCase(usersRepository);
   });
 
-  it("should be able to return a profile when user is authenticated", async () => {
+  it("should be able to return an user profile", async () => {
     const user: ICreateUserDTO = {
       email: "user@test.com.br",
       name: "User Test",

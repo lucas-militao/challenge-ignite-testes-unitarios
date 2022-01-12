@@ -1,8 +1,8 @@
 
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
-import { AppError } from "@shared/errors/AppError";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 import { ICreateUserDTO } from "./ICreateUserDTO";
+import { CreateUserError } from "./CreateUserError";
 
 let createUserUseCase: CreateUserUseCase;
 let usersRepository: InMemoryUsersRepository;
@@ -26,15 +26,17 @@ describe("Create User", () => {
     expect(response).toHaveProperty("id");
   })
 
-  it("should not be able to create an existing user", () => {
-    expect(async () => {
-      const user: ICreateUserDTO = {
-        name: "User Test",
-        email: "test@email.com",
-        password: "1234"
-      };
+  it("should not be able to create an existing user", async () => {
+    const user: ICreateUserDTO = {
+      name: "User Test",
+      email: "test@email.com",
+      password: "1234"
+    };
 
-      await createUserUseCase.execute(user);
-    }).rejects.toBeInstanceOf(AppError);
+    await createUserUseCase.execute(user);
+
+    await expect(
+      createUserUseCase.execute(user)
+    ).rejects.toEqual(new CreateUserError());
   });
 });
