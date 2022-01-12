@@ -9,7 +9,6 @@ import createConnectionDatabase from './database';
 import './shared/container';
 import { router } from './routes';
 import { AppError } from './shared/errors/AppError';
-import { createConnection } from 'net';
 
 createConnectionDatabase();
 const app = express();
