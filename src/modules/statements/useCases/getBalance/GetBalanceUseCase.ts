@@ -1,4 +1,4 @@
-import { Statement } from "@modules/statements/entities/Statement";
+import { OperationType, Statement } from "@modules/statements/entities/Statement";
 import { IStatementsRepository } from "@modules/statements/repositories/IStatementsRepository";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { inject, injectable } from "tsyringe";
@@ -10,8 +10,19 @@ interface IRequest {
   user_id: string;
 }
 
+interface ITransferResponse {
+  id: string,
+	sender_id: string,
+  amount: number,
+  description: string,
+  type: OperationType,
+  created_at: Date,
+  updated_at: Date
+}
+
 interface IResponse {
   statement: Statement[];
+  transfer: ITransferResponse[];
   balance: number;
 }
 
@@ -36,6 +47,10 @@ export class GetBalanceUseCase {
       user_id,
       with_statement: true
     });
+
+    const transfers = (balance as IResponse).statement.filter(statement => statement.type === OperationType.TRANSFER);
+
+    console.log(transfers[0]);
 
     return balance as IResponse;
   }

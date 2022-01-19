@@ -30,12 +30,15 @@ export class Statement {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToOne(() => Transfer)
-  @JoinColumn({ referencedColumnName: "statement_id" })
-  transfer: Transfer
-
   @Column()
   description: string;
+
+  @Column('uuid')
+  transfer_id?: string;
+
+  @OneToOne(type => Transfer)
+  @JoinColumn({ name: "transfer_id" })
+  transfer: Transfer;
 
   @Column('decimal', { precision: 5, scale: 2 })
   amount: number;

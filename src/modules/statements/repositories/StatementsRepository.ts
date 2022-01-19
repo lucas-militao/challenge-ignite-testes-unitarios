@@ -14,16 +14,20 @@ export class StatementsRepository implements IStatementsRepository {
   }
 
   async create({
+    id,
     user_id,
     amount,
     description,
-    type
+    type,
+    transfer_id
   }: ICreateStatementDTO): Promise<Statement> {
     const statement = this.repository.create({
+      id,
       user_id,
       amount,
       description,
-      type
+      type,
+      transfer_id
     });
 
     return await this.repository.save(statement);
@@ -50,7 +54,7 @@ export class StatementsRepository implements IStatementsRepository {
       } else {
         return acc - operation.amount;
       }
-    }, 0)
+    }, 0);
 
     if (with_statement) {
       return {

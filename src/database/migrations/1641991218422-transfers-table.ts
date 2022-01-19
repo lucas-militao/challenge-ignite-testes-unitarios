@@ -16,33 +16,11 @@ export class transfersTable1641991218422 implements MigrationInterface {
             type: 'uuid',
           },
           {
-            name: 'sender_id',
-            type: 'uuid',
-          },
-          {
             name: 'receiver_id',
             type: 'uuid',
           },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
-          }
         ],
         foreignKeys: [
-          {
-            name: 'transfer_sender',
-            columnNames: ['sender_id'],
-            referencedTableName: 'users',
-            referencedColumnNames: ['id'],
-            onUpdate: 'CASCADE',
-            onDelete: 'CASCADE'
-          },
           {
             name: 'transfer_receiver',
             columnNames: ['receiver_id'],
