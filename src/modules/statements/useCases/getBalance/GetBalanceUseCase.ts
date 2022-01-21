@@ -64,8 +64,6 @@ export class GetBalanceUseCase {
       })
     });
 
-    console.log(transfersConverted);
-
     let statements = balance.statement.filter(statement => statement.type !== 'transfer');
 
     return {
