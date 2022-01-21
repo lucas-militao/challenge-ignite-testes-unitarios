@@ -6,6 +6,16 @@ import { IGetBalanceDTO } from "../useCases/getBalance/IGetBalanceDTO";
 import { IGetStatementOperationDTO } from "../useCases/getStatementOperation/IGetStatementOperationDTO";
 import { IStatementsRepository } from "./IStatementsRepository";
 
+interface ITransferResponse {
+  id: string,
+	sender_id: string,
+  amount: number,
+  description: string,
+  type: string,
+  created_at: Date,
+  updated_at: Date
+}
+
 export class StatementsRepository implements IStatementsRepository {
   private repository: Repository<Statement>;
 
@@ -17,13 +27,15 @@ export class StatementsRepository implements IStatementsRepository {
     user_id,
     amount,
     description,
-    type
+    type,
+    receiver_id
   }: ICreateStatementDTO): Promise<Statement> {
     const statement = this.repository.create({
       user_id,
       amount,
       description,
-      type
+      type,
+      receiver_id
     });
 
     return await this.repository.save(statement);
@@ -45,17 +57,22 @@ export class StatementsRepository implements IStatementsRepository {
     });
 
     const balance = statement.reduce((acc, operation) => {
+      let amount = parseFloat(operation.amount.toString());
       if (operation.type === 'deposit') {
-        return acc + operation.amount;
+        return acc + amount;
       } else {
-        return acc - operation.amount;
+        return acc - amount;
       }
     }, 0)
+
+    const transfer = statement.filter(statement => statement.type === 'transfer');
+
+    const transferConverted: ITransferResponse[] = [];
 
     if (with_statement) {
       return {
         statement,
-        balance
+        balance,
       }
     }
 
